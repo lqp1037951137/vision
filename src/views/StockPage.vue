@@ -1,15 +1,15 @@
 <template>
   <div class="com-page">
-    <seller></seller>
+    <stock></stock>
   </div>
 </template>
 
 <script>
-import Seller from "@/components/Seller";
+import Stock from "@/components/Stock";
 export default {
-  name: "SellerPage",
+  name: "StockPage",
   components: {
-    seller: Seller
+    stock: Stock
   },
   data() {
     return {};

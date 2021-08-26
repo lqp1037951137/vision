@@ -5,6 +5,8 @@ import Seller from '@/components/Seller'
 import TrendPage from '../views/TrendPage'
 import MapPage from '../views/MapPage'
 import RankPage from '../views/RankPage'
+import HotPage from '../views/HotPage'
+import StockPage from '../views/StockPage'
 
 Vue.use(Router)
 
@@ -28,6 +30,14 @@ export default new Router({
       path: '/rankpage',
       name: 'RankPage',
       component: RankPage
+    }, {
+      path: '/hotpage',
+      name: 'HotPage',
+      component: HotPage
+    }, {
+      path: '/stockpage',
+      name: 'StockPage',
+      component: StockPage
     }, {
       path: '/',
       name: 'Seller',
