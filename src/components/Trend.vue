@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -34,15 +35,24 @@ export default {
       titleFontSize: 0
     };
   },
+  created() {
+    this.$socket.registerCallBack("trendData", this.getData);
+  },
   mounted() {
     this.initChart();
-    this.getData();
+    //this.getData();
+    this.$socket.send({
+      action: "getData",
+      socketType: "trendData",
+      chartName: "trend",
+      value: ""
+    });
     window.addEventListener("resize", this.screenAdapter);
     this.screenAdapter();
   },
   methods: {
     initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.trend_ref, "chalk");
+      this.chartInstance = this.$echarts.init(this.$refs.trend_ref, this.theme);
       const initOption = {
         grid: {
           left: "3%",
@@ -69,9 +79,9 @@ export default {
       };
       this.chartInstance.setOption(initOption);
     },
-    async getData() {
-      const { data } = await this.$http.get("trend");
-      this.allData = data;
+    async getData(ret) {
+      // const { data } = await this.$http.get("trend");
+      this.allData = ret;
       this.updateChart();
     },
     updateChart() {
@@ -132,7 +142,7 @@ export default {
           itemHeight: this.titleFontSize,
           itemGap: this.titleFontSize,
           textStyle: {
-            fontSize: this.titleFontSize / 2
+            fontSize: this.titleFontSize 
           }
         }
       };
@@ -146,6 +156,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["theme"]),
     selectTypes() {
       if (!this.allData) {
         return [];
@@ -161,7 +172,9 @@ export default {
     },
     comStyle() {
       return {
-        fontSize: this.titleFontSize + "px"
+        fontSize: this.titleFontSize + "px",
+        color: this.theme === "chalk" ? "white" : "black",
+        background: this.theme === "chalk" ? "#222733" : "white"
       };
     },
     marginStyle() {
@@ -170,8 +183,18 @@ export default {
       };
     }
   },
+  watch: {
+    theme() {
+      console.log("主题切换");
+      this.chartInstance.dispose();
+      this.initChart();
+      this.screenAdapter();
+      this.updateChart();
+    }
+  },
   destroyed() {
     window.removeEventListener("resize", this.screenAdapter);
+    this.$socket.unRegisterCallBack("trendData");
   }
 };
 </script>
@@ -182,13 +205,12 @@ export default {
   left: 20px;
   top: 20px;
   z-index: 10;
-  color: white;
   .title-icon {
     margin-left: 10px;
     cursor: pointer;
   }
   .select-con {
-    background: #222733;
+    // background: #222733;
   }
 }
 </style>

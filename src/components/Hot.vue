@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -29,7 +31,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.hot_ref, "chalk");
+      this.chartInstance = this.$echarts.init(this.$refs.hot_ref, this.theme);
       const initOption = {
         title: {
           text: "▎热销商品的占比",
@@ -115,11 +117,11 @@ export default {
           }
         },
         legend: {
-          itemWidth: this.titleFontSize / 2,
-          itemHeight: this.titleFontSize / 2,
+          itemWidth: this.titleFontSize,
+          itemHeight: this.titleFontSize,
           itemGap: this.titleFontSize / 2,
           textStyle: {
-            fontSize: this.titleFontSize / 2
+            fontSize: this.titleFontSize / 1.125
           }
         },
         series: [
@@ -148,6 +150,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["theme"]),
     catName() {
       if (!this.allData) {
         return "";
@@ -156,8 +159,18 @@ export default {
     },
     comStyle() {
       return {
-        fontSize: this.titleFontSize + "px"
+        fontSize: this.titleFontSize * 2 + "px",
+        color: this.theme === "chalk" ? "white" : "black"
       };
+    }
+  },
+  watch: {
+    theme() {
+      console.log("主题切换");
+      this.chartInstance.dispose();
+      this.initChart();
+      this.screenAdapter();
+      this.updateChart();
     }
   },
   destroyed() {
@@ -173,7 +186,6 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: white;
 }
 .arr-right {
   position: absolute;
@@ -181,12 +193,10 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: white;
 }
 .cat-name {
   position: absolute;
   left: 80%;
   bottom: 20px;
-  color: white;
 }
 </style>

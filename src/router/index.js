@@ -7,41 +7,48 @@ import MapPage from '../views/MapPage'
 import RankPage from '../views/RankPage'
 import HotPage from '../views/HotPage'
 import StockPage from '../views/StockPage'
+import ScreenPage from '../views/ScreenPage'
 
 Vue.use(Router)
 
 export default new Router({
   // mode: 'history',
-  routes: [
-
-    {
-      path: '/sellerpage',
-      name: 'SellerPage',
-      component: SellerPage
-    }, {
-      path: '/trendpage',
-      name: 'TrendPage',
-      component: TrendPage
-    }, {
-      path: '/mappage',
-      name: 'MapPage',
-      component: MapPage
-    }, {
-      path: '/rankpage',
-      name: 'RankPage',
-      component: RankPage
-    }, {
-      path: '/hotpage',
-      name: 'HotPage',
-      component: HotPage
-    }, {
-      path: '/stockpage',
-      name: 'StockPage',
-      component: StockPage
-    }, {
+  routes: [{
       path: '/',
-      name: 'Seller',
-      component: Seller
+      redirect: '/screen'
+    },
+    {
+      path: '/screen',
+      component: ScreenPage
     }
+    // {
+    //   path: '/sellerpage',
+    //   name: 'SellerPage',
+    //   component: SellerPage
+    // }, {
+    //   path: '/trendpage',
+    //   name: 'TrendPage',
+    //   component: TrendPage
+    // }, {
+    //   path: '/mappage',
+    //   name: 'MapPage',
+    //   component: MapPage
+    // }, {
+    //   path: '/rankpage',
+    //   name: 'RankPage',
+    //   component: RankPage
+    // }, {
+    //   path: '/hotpage',
+    //   name: 'HotPage',
+    //   component: HotPage
+    // }, {
+    //   path: '/stockpage',
+    //   name: 'StockPage',
+    //   component: StockPage
+    // }, {
+    //   path: '/',
+    //   name: 'Seller',
+    //   component: Seller
+    // }
   ]
 })

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -23,7 +24,10 @@ export default {
   },
   methods: {
     initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.seller_ref, "chalk");
+      this.chartInstance = this.$echarts.init(
+        this.$refs.seller_ref,
+        this.theme
+      );
       const initOption = {
         title: {
           text: "▎商家销售统计",
@@ -155,6 +159,18 @@ export default {
       };
       this.chartInstance.setOption(adapterOption);
       this.chartInstance.resize();
+    }
+  },
+  computed: {
+    ...mapState(["theme"])
+  },
+  watch: {
+    theme() {
+      console.log("主题切换");
+      this.chartInstance.dispose();
+      this.initChart();
+      this.screenAdapter();
+      this.updateChart();
     }
   },
   destroyed() {
